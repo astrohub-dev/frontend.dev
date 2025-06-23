@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NebulaX</title>
+</head>
+<body>
+    <h1>NebulaX</h1>
+    <p>Your number one cryptocurrency exchange</p>
+    <p>create account</p>
+    <input type="text" placeholder="username"><br>  
+    <input type="text"  placeholder="email"><br>
+    <input type="password" placeholder="password"><br>
+    <button class="button1">submit</button><br>
+    <p>Already have an account? <a href="login.html">Login</a></p>
+    <button class="button3">continue with google</button><br>
+    <script>
+        document.querySelector('.button1').addEventListener('click', async function() {
+            const data ={
+                username: document.querySelector('input[placeholder="username"]').value,
+                email: document.querySelector('input[placeholder="email"]').value,
+                password: document.querySelector('input[placeholder="password"]').value
+            }
+            console.log(data);
+            try {
+                const response = await fetch('http://localhost:3000/api/users', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                } 
+                const result = await response.json()
+                alert('Account created successfully!');
+                return result;
+            } catch (error) {  
+                console.error('Error:', error);
+            }
+        });
+
+        document.querySelector('.button3').addEventListener('click', function() {
+            try{
+                window.location.href = 'http://localhost:3000/api/auth/google';
+            } catch (error) {
+                console.error('Error redirecting to Google authentication:', error);
+            }
+        });
+    </script>
+</body>
+</html>
